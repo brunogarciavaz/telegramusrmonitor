@@ -9,6 +9,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "node-telegram-bot-api": "^0.30.0"
+    "cheerio": "^1.0.0-rc.2",
+    "node-telegram-bot-api": "^0.30.0",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.2"
   }
 }

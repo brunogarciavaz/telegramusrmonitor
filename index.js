@@ -1,7 +1,8 @@
 const TelegramBot = require('node-telegram-bot-api');
-
-// replace the value below with the Telegram token you receive from @BotFather
 const token = process.env.ENVTOKEN;
+const rp = require('request-promise');
+const cheerio = require('cheerio');
+
 
 // Create a bot that uses 'polling' to fetch new updates
 const bot = new TelegramBot(token, {polling: true});
@@ -27,3 +28,20 @@ bot.on('message', (msg) => {
   // send a message to the chat acknowledging receipt of their message
   bot.sendMessage(chatId, 'Received your message');
 });
+
+function checkUsername(username) {
+	const options = {
+  uri: `https://t.me/` + username,
+  transform: function (body) {
+    return cheerio.load(body);
+  }
+};
+rp(options)
+.then(($) => {
+	console.log($);
+})
+.catch((err) => {
+	console.log(err);
+});
+
+};
