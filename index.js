@@ -1,47 +1,52 @@
+const fs = require('fs');
+const data = fs.readFileSync('data.json');
+const db = JSON.parse(data);
 const TelegramBot = require('node-telegram-bot-api');
 const token = process.env.ENVTOKEN;
 const rp = require('request-promise');
 const cheerio = require('cheerio');
 
 
-// Create a bot that uses 'polling' to fetch new updates
+
 const bot = new TelegramBot(token, {polling: true});
 
-// Matches "/echo [whatever]"
-bot.onText(/\/echo (.+)/, (msg, match) => {
-  // 'msg' is the received Message from Telegram
-  // 'match' is the result of executing the regexp above on the text content
-  // of the message
 
+bot.onText(/\/adduser (.+)/, (msg, match) => {
   const chatId = msg.chat.id;
-  const resp = match[1]; // the captured "whatever"
+  const resp = match[1];
+ // Should add a OBJ to the parsed json that contains the chatid and push the match to an array of users
+ 	if (checkUsername(match)) {
+		bot.sendMessage(chatId, `O usuário ${match} não está disponível`);
+	} else {
+		bot.sendMessage(chatId, `O usuário ${match} está disponível`);
+	}
+ 	addName (match, chatId)
 
-  // send back the matched "whatever" to the chat
-  bot.sendMessage(chatId, resp);
+
 });
 
-// Listen for any kind of message. There are different kinds of
-// messages.
-bot.on('message', (msg) => {
-  const chatId = msg.chat.id;
+function addName (name, chatId) {
+	db.users.push({
+	chatId: chatId,
+	username: name
 
-  // send a message to the chat acknowledging receipt of their message
-  bot.sendMessage(chatId, 'Received your message');
-});
-
+	})
+}
 function checkUsername(username) {
 	const options = {
   uri: `https://t.me/` + username,
   transform: function (body) {
     return cheerio.load(body);
   }
-};
-rp(options)
-.then(($) => {
-	console.log($);
-})
-.catch((err) => {
-	console.log(err);
-});
+	};
+	rp(options)
+	.then(($) => {
+		let hasUser = $('.tgme_page_extra').length;
+		return hasUser;
+	})
+
+	.catch((err) => {
+
+	});
 
 };
