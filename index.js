@@ -98,10 +98,9 @@ function routine() {
     return Promise.all(userObj.username.map(username => {
       return checkUsername(username).then(hasUser => {
         if(!hasUser) {
-  				//	bot.sendMessage(userObj.chatId, `‼️ Username @${username} is now AVAILABLE ‼️`)
-					console.log("sim" + username);
+  					bot.sendMessage(userObj.chatId, `‼️ Username @${username} is now AVAILABLE ‼️`)
 					removeName(username, userObj.chatId);
-          } else console.log("não" + username)
+          } else console.log("Not passed:" username)
       })
         }
     ))
