@@ -1,0 +1,2 @@
+Much like Twitter, Telegram has unique user handles such as @bruno. This bot scrapes t.me and warns the user when a given username he's monitoring is available to use. You can combine this with Telegram's Client API to automatically secure the free users, since it's impossible to poll usernames using the client because of timeouts.
+If you're going to use this you're going to have to at least add error handling for the promises
